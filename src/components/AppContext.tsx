@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState } from "react"
+import { UserData } from "../pages/Conta"
 import { getAllLocalStorage } from "../services/storage"
 
 interface IAppContext {
-    user: string,
+    userData: UserData,
+    setUserData: (user: UserData) => void
     isLoggedIn: boolean,
     setIsLoggedIn: (isLoggedIn: boolean) => void
 }
@@ -11,7 +13,7 @@ export const AppContext = createContext({} as IAppContext)
   
 export const AppContextProvider = ({ children }: any) => {
     const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false)
-
+    const [userData, setUserData] = useState<UserData>({} as UserData)
     const storage = getAllLocalStorage()
 
     useEffect(() => {
@@ -20,11 +22,9 @@ export const AppContextProvider = ({ children }: any) => {
         setIsLoggedIn(login)
       }
     }, [])
-
-    const user = 'nathally'
   
     return (
-      <AppContext.Provider value={{ user, isLoggedIn, setIsLoggedIn }}>
+      <AppContext.Provider value={{ userData, isLoggedIn, setIsLoggedIn, setUserData }}>
         { children }
       </AppContext.Provider>
     )
